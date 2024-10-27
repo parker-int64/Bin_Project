@@ -55,6 +55,14 @@ async def getInfoFromESP():
     # return JSONRESPONSE
     if not mqtt_func.data_queue.empty():
         res = mqtt_func.data_queue.get()
-        res["filename"] = "20241027_214422.jpg"
+        res["filename"] = get_latest_image(FRONTEND_DIR / 'public/received_images')
         return res
 
+def get_latest_image(directory):
+    files = os.listdir(directory)
+    image_files = [f for f in files if f.endswith(('.jpg', '.jpeg', '.png', '.bmp'))]
+    if not image_files:
+        return None
+    image_files_with_mtime = [(f, os.path.getmtime(os.path.join(directory, f))) for f in image_files]
+    image_files_with_mtime.sort(key=lambda x: x[1], reverse=True)
+    return image_files_with_mtime[0][0]
