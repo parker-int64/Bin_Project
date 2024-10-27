@@ -39,7 +39,8 @@ onMounted(() => {
     detailInfo.binLoc.value = param["Device_Position"]
     detailInfo.binStats.value = param["Device_Status"]
     // statsImg.value = "/received_images/400x300.svg"
-    statsImg.value = param["Picture_File_Name"]
+    console.log(`Image filename ${param["filename"]}`)
+    statsImg.value = `/received_images/${param["filename"]}`
 })
 
 </script>

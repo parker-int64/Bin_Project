@@ -84,7 +84,7 @@ def start_uvicorn(module: str):
     """
     try:
         with subprocess.Popen([
-            "uvicorn", f"{module}:app", "--reload"
+            "uvicorn", f"{module}:app", "--reload", "--host", "0.0.0.0"
         ], cwd=BACKEND_DIR, shell= CURRENT_PLATFORM == "Windows") as uvicorn:
             uvicorn.wait()
 

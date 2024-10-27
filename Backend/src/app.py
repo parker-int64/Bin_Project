@@ -31,7 +31,7 @@ async def root():
 @app.post("/photo/")
 async def upload_image(request: Request):
     try:
-        save_path = 'received_images'
+        save_path = FRONTEND_DIR / 'public/received_images'
 
         logging.info("APP - Image Save Path: %s", save_path)
         if not os.path.exists(save_path):
@@ -44,7 +44,7 @@ async def upload_image(request: Request):
         with open(file_path, "wb") as buffer:
             data = await request.body()
             buffer.write(data)
-            PICTURE_FILE_NAME = filename
+
         return JSONResponse(content={"message": "Image successfully saved", "filename": filename}, status_code=200)
     except Exception as e:
         return JSONResponse(content={"message": f"Error: {str(e)}"}, status_code=500)
@@ -55,5 +55,6 @@ async def getInfoFromESP():
     # return JSONRESPONSE
     if not mqtt_func.data_queue.empty():
         res = mqtt_func.data_queue.get()
-        res["Picture_File_Name"] = PICTURE_FILE_NAME
+        res["filename"] = "20241027_214422.jpg"
         return res
+
