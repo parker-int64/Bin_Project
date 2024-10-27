@@ -118,7 +118,7 @@ onMounted(() => {
                             <p class="font-weight-black">图片</p>
                         </v-list-item-title>
                         <v-list-item-subtitle class="d-flex justify-center pt-5">
-                            <img :src="statsImg == null ? 'https://placehold.co/400x300' : statsImg"></img>
+                            <img :src="statsImg == null || '' ? 'https://placehold.co/400x300' : statsImg"></img>
                         </v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>

@@ -32,6 +32,8 @@ async def root():
 def upload_image(request: Request):
     try:
         save_path = FRONTEND_DIR / 'public/received_images'
+
+        logging.info("APP - Image Save Path: %s", save_path)
         if not os.path.exists(save_path):
             os.makedirs(save_path)
 
