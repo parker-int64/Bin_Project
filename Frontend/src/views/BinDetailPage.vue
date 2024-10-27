@@ -1,19 +1,24 @@
 <script setup>
 
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 
 import mdiLocationOn from "@/assets/mdi-location-on.svg"
 
 import faMicroChip from "@/assets/fa-mircochip.svg"
+
+
+const props = defineProps({
+    binInfo: Object
+})
+
 const detailInfo = {
     binName: ref("unknown"),
     xiaoId: ref("unknown"),
     xiaoBat: ref("0%"),
     binLoc: ref("门前大桥下"),
     binStats: ref("满了！"),
-
 }
 
 const statsImg = ref(null)
@@ -25,25 +30,16 @@ const returnToHome = () => {
 }
 
 
-const getDistance = async () => {
-    const response = await fetch("http://192.168.100.22:5000/distance/", {
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Content-Type': 'application/json'
-        },
-
-        mode: 'cors'
-
-    })
-
-    const data = response.json()
-
-    console.log(`Distance: ${data}`)
-    return data["distance"]
-}
-
-onMounted(async () => {
-    const distance = await getDistance()
+onMounted(() => {
+    const route = useRoute()
+    const param = JSON.parse(route.query.item)
+    detailInfo.binName.value = param["Device_Name"]
+    detailInfo.xiaoId.value = param["Device_ID"]
+    detailInfo.xiaoBat.value = param["Device_Battery"]
+    detailInfo.binLoc.value = param["Device_Position"]
+    detailInfo.binStats.value = param["Device_Status"]
+    // statsImg.value = "/received_images/400x300.svg"
+    statsImg.value = param["Picture_File_Name"]
 })
 
 </script>
@@ -59,7 +55,7 @@ onMounted(async () => {
             </v-card-title>
 
             <v-card-subtitle>
-                {{ "这里显示的是桶子" + detailInfo.binName.value + "的信息" }}
+                {{ "这里显示的是" + detailInfo.binName.value + "桶子的信息" }}
             </v-card-subtitle>
         </v-card-item>
 
@@ -96,7 +92,7 @@ onMounted(async () => {
                             <v-icon>mdi-delete</v-icon>
                             <p class="font-weight-black">剩余电量</p>
                         </v-list-item-title>
-                        <v-list-item-subtitle class="pt-5">{{ detailInfo.xiaoBat }}</v-list-item-subtitle>
+                        <v-list-item-subtitle class="pt-5">{{ detailInfo.xiaoBat.value + "%" }}</v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
 

@@ -1,16 +1,40 @@
 <script setup>
 
-import { onMounted, ref } from 'vue';
+import { ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 
+const props = defineProps({
+    binInfo: {
+        type: Object,
+        default: null
+    }
+})
 
 const binStatus = ref("null")
+
+const infoObject = ref(null)
 
 const statusWord = {
     "null": "未知",
     "empty": "空空如也~",
-    "alert": "即将满溢",
+    "alert": "即将满溢",/*  */
     "full": "已满，立即清理"
 }
+
+const router = useRouter()
+
+const jumpToDetailPage = () => {
+    let obj = JSON.stringify(infoObject.value)
+    router.push({
+        path: "binDetail",
+        query: { item: obj }
+    })
+}
+
+watch(props, (newProps) => {
+    binStatus.value = newProps.binInfo["Device_Status"]
+    infoObject.value = newProps.binInfo
+})
 
 </script>
 
@@ -39,7 +63,7 @@ const statusWord = {
         </v-card-text>
 
         <v-card-actions>
-            <v-btn text="查看详情" append-icon="mdi-chevron-right"></v-btn>
+            <v-btn text="查看详情" append-icon="mdi-chevron-right" @click=jumpToDetailPage></v-btn>
         </v-card-actions>
     </v-card>
 </template>
