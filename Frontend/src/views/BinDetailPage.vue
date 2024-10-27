@@ -1,6 +1,6 @@
 <script setup>
 
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import { useRouter } from 'vue-router';
 
@@ -23,6 +23,28 @@ const router = useRouter()
 const returnToHome = () => {
     router.push("/")
 }
+
+
+const getDistance = async () => {
+    const response = await fetch("http://192.168.100.22:5000/distance/", {
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json'
+        },
+
+        mode: 'cors'
+
+    })
+
+    const data = response.json()
+
+    console.log(`Distance: ${data}`)
+    return data["distance"]
+}
+
+onMounted(async () => {
+    const distance = await getDistance()
+})
 
 </script>
 
