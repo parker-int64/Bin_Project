@@ -14,9 +14,10 @@ import { RouterView, RouterLink } from 'vue-router';
               value="settings"></v-list-item></router-link>
         </v-list>
       </v-navigation-drawer>
-
       <v-main>
-        <router-view></router-view>
+        <v-container class="ma-auto pa-0">
+          <router-view />
+        </v-container>
       </v-main>
     </v-layout>
 

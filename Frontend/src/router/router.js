@@ -38,7 +38,14 @@ const router = createRouter({
             path: '/profile',
             name: 'profile',
             component: () => import('../views/ProfilePage.vue')
-        }
+        },
+
+        {
+            path: '/binDetail',
+            name: 'binDetail',
+            component: () => import('../views/BinDetailPage.vue')
+        },
+
     ],
 });
 
