@@ -29,7 +29,7 @@ async def root():
 
 
 @app.post("/photo/")
-def upload_image(request: Request):
+async def upload_image(request: Request):
     try:
         save_path = 'received_images'
 
@@ -41,12 +41,10 @@ def upload_image(request: Request):
         filename = f'{timestamp}.jpg'
         file_path = os.path.join(save_path, filename)
 
-        PICTURE_FILE_NAME = filename
-
         with open(file_path, "wb") as buffer:
-            data = request.body()
+            data = await request.body()
             buffer.write(data)
-
+            PICTURE_FILE_NAME = filename
         return JSONResponse(content={"message": "Image successfully saved", "filename": filename}, status_code=200)
     except Exception as e:
         return JSONResponse(content={"message": f"Error: {str(e)}"}, status_code=500)
